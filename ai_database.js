@@ -58,7 +58,7 @@ export async function generateUserSchemaCompatible(idNumber) {
   const password = faker.internet.password({ length: 10, memorable: false });
 
   // Fake car data
-  const carModels = ['Toyota Corolla', 'VW Polo', 'Hyundai i20', 'Ford Fiesta', 'BMW 1 Series'];
+  const carModels = ['Toyota Corolla', 'VW Polo', 'Hyundai i20', 'Ford Fiesta', 'BMW 1 Series', 'Audi A3', 'Mercedes-Benz A-Class', 'Kia Picanto', 'Nissan Micra', 'Honda Jazz'];
   const numberPlate = `ND ${faker.number.int({ min: 100, max: 999 })} ${faker.number.int({ min: 100, max: 999 })} GP`;
   const releaseYear = faker.date.between({ from: '2015-01-01', to: '2023-12-31' });
 

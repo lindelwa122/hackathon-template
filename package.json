@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@faker-js/faker": "^9.9.0",
+    "node-fetch": "^3.3.2"
+  }
+}
