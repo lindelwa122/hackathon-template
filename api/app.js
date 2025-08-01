@@ -9,6 +9,7 @@ const { Pool } = require('pg');
 const session = require('express-session');
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/users');
 
 mongoose.set('strictQuery', false);
 const mongoDB = process.env.mongoDB;
@@ -28,10 +29,46 @@ const app = express();
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
-            const u
+            const user = await User.findOne({ username });
+            
+            if (user == null || user.password != password) {
+                return done(null, false, "Incorrect username/password");
+            }
+
+            return done(null, user);
+        } catch(err) {
+            return done(err);
         }
     })
-)
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err);
+    }
+});
+
+app.post(
+    '/login',
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/'
+    })
+);
+
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    })
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
