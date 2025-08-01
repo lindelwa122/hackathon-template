@@ -68,7 +68,21 @@ app.get('/logout', (req, res, next) => {
         if (err) return next(err);
         res.redirect('/');
     })
-})
+});
+
+const alertsRoutes = require('./routes/alerts');
+const areasRoutes = require('./routes/areas');
+const authenticationRoutes = require('./routes/authentication');
+const badgesRoutes = require('./routes/badges');
+const dashboardRoutes = require('./routes/dashboard');
+const travelEngineRoutes = require('./routes/travelEngine');
+
+app.use('/alerts', alertsRoutes);
+app.use('/areas', areasRoutes);
+app.use('/auth', authenticationRoutes);
+app.use('/badges', badgesRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/engine/travel', travelEngineRoutes);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
