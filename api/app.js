@@ -5,6 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { Pool } = require('pg');
+const session = require('express-session');
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
 
 mongoose.set('strictQuery', false);
 const mongoDB = process.env.mongoDB;
@@ -15,10 +19,23 @@ const main = async () => {
 }
 main().catch(err => console.error(err));
 
+const pool = new Pool({
+
+});
+
 const app = express();
+
+passport.use(
+    new LocalStrategy(async (username, password, done) => {
+        try {
+            const u
+        }
+    })
+)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(cors());
 app.use(logger('dev'));
