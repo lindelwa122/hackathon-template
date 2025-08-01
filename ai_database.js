@@ -28,64 +28,53 @@ import fetch from 'node-fetch';
 // Parse South African ID to get DOB, gender, and age
 function parseSouthAfricanID(idNumber) {
   try {
-    const yy = parseInt(idNumber.substring(0, 2));
-    const mm = parseInt(idNumber.substring(2, 4));
-    const dd = parseInt(idNumber.substring(4, 6));
-    const ssss = parseInt(idNumber.substring(6, 10));
+    const yy = parseInt(idNumber.slice(0, 2));
+    const mm = parseInt(idNumber.slice(2, 4));
+    const dd = parseInt(idNumber.slice(4, 6));
+    const ssss = parseInt(idNumber.slice(6, 10));
 
     const year = yy > 25 ? 1900 + yy : 2000 + yy;
     const dob = new Date(year, mm - 1, dd);
     const gender = ssss >= 5000 ? 'Male' : 'Female';
-    const age = new Date().getFullYear() - year;
 
-    return { dob: dob.toISOString().split('T')[0], gender, age };
-  } catch (error) {
-    return { dob: null, gender: null, age: null };
-  }
-}
-
-// Call Hugging Face model (FLAN-T5 via Hugging Face Inference API)
-async function callLLM(prompt) {
-  const HF_API_TOKEN = 'your-huggingface-token'; // 🔒 replace with your real token
-  const response = await fetch('https://api-inference.huggingface.co/models/google/flan-t5-small', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${HF_API_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ inputs: prompt }),
-  });
-
-  const result = await response.json();
-  return result[0]?.generated_text || '';
-}
-
-// Main generator
-export async function generatePersonFromID(idNumber) {
-  const { dob, gender, age } = parseSouthAfricanID(idNumber);
-
-  if (!dob) {
-    return { error: 'Invalid ID number format.' };
-  }
-
-  const name = gender === 'Male' ? faker.person.fullName({ sex: 'male' }) : faker.person.fullName({ sex: 'female' });
-  const city = faker.location.city();
-  const job = faker.person.jobTitle();
-  const company = faker.company.name();
-  const email = faker.internet.email({ firstName: name.split(' ')[0], lastName: name.split(' ')[1] });
-
-  const sentence = `My name is ${name}, I was born on ${dob}. I'm ${age} years old, ${gender}, living in ${city}, and I work as a ${job} at ${company}. You can contact me at ${email}.`;
-
-  const prompt = `Extract the following structured personal information from this text and return it as a JSON dictionary: name, dob, age, gender, location, job, employer, email, id_number.\n\n${sentence}`;
-
-  const output = await callLLM(prompt);
-
-  try {
-    const json = JSON.parse(output);
-    return { ...json, id_number: idNumber };
+    return { dob, gender };
   } catch {
-    return { raw_output: output, id_number: idNumber };
+    return { dob: null, gender: null };
   }
+}
+
+export async function generateUserSchemaCompatible(idNumber) {
+  const { dob, gender } = parseSouthAfricanID(idNumber);
+  if (!dob) return { error: 'Invalid ID number format.' };
+
+  // Split names
+  const fullName = gender === 'Male'
+    ? faker.person.fullName({ sex: 'male' })
+    : faker.person.fullName({ sex: 'female' });
+
+  const [firstName, lastName] = fullName.split(' ');
+  const username = faker.internet.userName({ firstName, lastName }).toLowerCase();
+  const email = faker.internet.email({ firstName, lastName }).toLowerCase();
+  const password = faker.internet.password({ length: 10, memorable: false });
+
+  // Fake car data
+  const carModels = ['Toyota Corolla', 'VW Polo', 'Hyundai i20', 'Ford Fiesta', 'BMW 1 Series'];
+  const numberPlate = `ND ${faker.number.int({ min: 100, max: 999 })} ${faker.number.int({ min: 100, max: 999 })} GP`;
+  const releaseYear = faker.date.between({ from: '2015-01-01', to: '2023-12-31' });
+
+  return {
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    id: idNumber,
+    car: {
+      model: faker.helpers.arrayElement(carModels),
+      numberPlate,
+      releaseDate: releaseYear.toISOString(),
+    },
+  };
 }
 
 
