@@ -1,5 +1,9 @@
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
 // Badge Definitions Collection
-{
+const BadgesDefinitionSchema = new Schema({
   _id: ObjectId("..."),
   badge_type: "weather_warrior",
   name: "Weather Warrior",
@@ -18,5 +22,7 @@
       icon_url: "/badges/weather-warrior-gold.png"
     }
   }
-}
+});
+
+module.exports = mongoose.model('Badges', BadgesDefinitionSchema);
 

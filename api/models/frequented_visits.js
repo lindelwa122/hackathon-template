@@ -1,5 +1,9 @@
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
 // Visits Collection
-{
+const FrequentedVisitsSchema = new Schema({
   _id: ObjectId("..."),
   place_id: ObjectId("..."), 
   user_id: ObjectId("..."), 
@@ -8,4 +12,6 @@
   duration_minutes: 570, // Auto-calculated
   weather_risk: "heavy_rain",
   notes: "Traffic was bad due to weather"
-}
+});
+
+module.exports = mongoose.model('Frequented', FrequentedVisitsSchema);

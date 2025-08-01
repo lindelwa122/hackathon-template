@@ -1,5 +1,9 @@
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
 // User Badges Collection
-{
+const BadgesCollectionSchema = new Schema({
   _id: ObjectId("..."),
   user_id: ObjectId("..."),
   badge_type: "weather_warrior",
@@ -12,4 +16,6 @@
       timestamp: ISODate("2024-05-15T08:30:00Z")
     }
   ]
-}
+});
+
+module.exports = mongoose.model('Badges', BadgesCollectionSchema);
