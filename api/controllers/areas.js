@@ -1,7 +1,23 @@
-const Frequented = require('./models/frequented_visits');
+const Place = require('./models/place');
+const PlaceSerializer = require('../serializers/PlaceSerializer');
 const asyncHandler = require('express-async-handler');
 
 exports.getHome = asyncHandler(async (req, res, next) => {
-    const frequented = await Frequented.find({ user_id: req.user._id });
-    
+    const place = await Place.findOne({ user_id: req.user._id, name: 'home' });
+    const serializedData = new PlaceSerializer(place);
+    return res.status(200).json({
+        data: serializedData.getJSON()
+    });
+});
+
+exports.getWork = asyncHandler(async (req, res, next) => {
+    const place = await Place.findOne({ user_id: req.user._id, name: 'work' });
+    const serializedData = new PlaceSerializer(place);
+    return res.status(200).json({
+        data: serializedData.getJSON()
+    });
+});
+
+exports.getFrequentedPlace = asyncHandler(async (req, res, next) => {
+    const places = await Place.find({ user_id: req.user._id });
 });

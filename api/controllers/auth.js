@@ -36,7 +36,7 @@ exports.register = asyncHandler(async(req, res, next)=>{
 
     const hashPassword = await bcrypt.hash(Password, 10);
     const userData = momentumDataPoint(userId);
-    const user = User.create(Object.assign({}, userData, { password: hashPassword }));
+    User.create(Object.assign({}, userData, { password: hashPassword }));
 
     return redirect('/auth/login');
 });
