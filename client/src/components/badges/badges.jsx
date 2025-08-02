@@ -1,5 +1,5 @@
 import React from 'react';
-import './Badges.css'; // Optional if you're not using Tailwind
+import './Badges.css'; 
 
 const badges = [
   {
