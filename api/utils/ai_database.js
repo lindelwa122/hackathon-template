@@ -17,15 +17,17 @@ This is the output that would be shown:
 }
 
 //Example usage 
-generatePersonFromID('9802055432084').then(console.log);
+generateUserSchemaCompatible('9802055432084').then(console.log);
 
 */
 
 
-import { faker } from '@faker-js/faker';
-import fetch from 'node-fetch';
+// api/utils/ai_database.js
 
-// Parse South African ID to get DOB, gender, and age
+const faker = require('@faker-js/faker').faker;
+const fetch = require('node-fetch');
+
+// Helper: Parse South African ID
 function parseSouthAfricanID(idNumber) {
   try {
     const yy = parseInt(idNumber.slice(0, 2));
@@ -43,11 +45,11 @@ function parseSouthAfricanID(idNumber) {
   }
 }
 
-export async function generateUserSchemaCompatible(idNumber) {
+// Generate user data for testing or seeding
+async function generateUserSchemaCompatible(idNumber) {
   const { dob, gender } = parseSouthAfricanID(idNumber);
   if (!dob) return { error: 'Invalid ID number format.' };
 
-  // Split names
   const fullName = gender === 'Male'
     ? faker.person.fullName({ sex: 'male' })
     : faker.person.fullName({ sex: 'female' });
@@ -57,10 +59,14 @@ export async function generateUserSchemaCompatible(idNumber) {
   const email = faker.internet.email({ firstName, lastName }).toLowerCase();
   const password = faker.internet.password({ length: 10, memorable: false });
 
-  // Fake car data
-  const carModels = ['Toyota Corolla', 'VW Polo', 'Hyundai i20', 'Ford Fiesta', 'BMW 1 Series', 'Audi A3', 'Mercedes-Benz A-Class', 'Kia Picanto', 'Nissan Micra', 'Honda Jazz'];
+  const carModels = [
+    'Toyota Corolla', 'VW Polo', 'Hyundai i20', 'Ford Fiesta',
+    'BMW 1 Series', 'Audi A3', 'Mercedes-Benz A-Class',
+    'Kia Picanto', 'Nissan Micra', 'Honda Jazz'
+  ];
+
   const numberPlate = `ND ${faker.number.int({ min: 100, max: 999 })} ${faker.number.int({ min: 100, max: 999 })} GP`;
-  const releaseYear = faker.date.between({ from: '2015-01-01', to: '2023-12-31' });
+  const releaseYear = faker.date.between('2015-01-01', '2023-12-31');
 
   return {
     firstName,
@@ -69,12 +75,19 @@ export async function generateUserSchemaCompatible(idNumber) {
     email,
     password,
     id: idNumber,
+    dob: dob.toISOString().split('T')[0],
+    gender,
     car: {
       model: faker.helpers.arrayElement(carModels),
       numberPlate,
       releaseDate: releaseYear.toISOString(),
-    },
+    }
   };
 }
+
+module.exports = {
+  generateUserSchemaCompatible
+};
+
 
 

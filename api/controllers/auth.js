@@ -1,4 +1,4 @@
-const User = require = ('./models/user');
+const User = require('../models/users');
 const passport = require('passport');
 const asyncHandler = require('express-async-handler');
 const momentumDataPoint = require('../utils/ai_database');
@@ -16,7 +16,7 @@ exports.login = passport.authenticate('local', (err, user, info, status)=> {
     return res.status(200).json({
         message: 'logged in successfully'
     });
-})(req, res, next);
+});
 
 exports.logout = asyncHandler(async(req, res, next)=>{
     req.logout(err=>{
