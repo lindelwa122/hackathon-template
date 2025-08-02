@@ -20,11 +20,14 @@ const main = async () => {
 }
 main().catch(err => console.error(err));
 
-const pool = new Pool({
-
-});
-
 const app = express();
+
+app.use(cors());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -55,21 +58,6 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-app.post(
-    '/login',
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/'
-    })
-);
-
-app.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        res.redirect('/');
-    })
-});
-
 const alertsRoutes = require('./routes/alerts');
 const areasRoutes = require('./routes/areas');
 const authenticationRoutes = require('./routes/authentication');
@@ -87,15 +75,6 @@ app.use('/engine/travel', travelEngineRoutes);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-app.use(cors());
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// TODO: ADD ROUTES
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

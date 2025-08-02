@@ -1,6 +1,6 @@
-import { serverURI } from './globals-variables';
+import { serverURI } from './global-variables';
 
-const saveDataToServer = async (url, data, method='POST') => {
+const sendDataToServer = async (url: String, data: Object, method='POST') => {
   const response = await fetch(serverURI + url, {
     headers: { 
       'Content-Type': 'application/json'
@@ -13,11 +13,10 @@ const saveDataToServer = async (url, data, method='POST') => {
     const err = new Error(
       `Something wrong occurred! The status code is ${response.status}`
     );
-    err.status = response.status;
     throw err;
   }
 
   return { status: response.status, success: true };
 }
 
-export { saveDataToServer };
+export default sendDataToServer;

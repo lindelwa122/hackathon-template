@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { serverURI } from 'global-variables';
+import { serverURI } from './global-variables';
 import axios from "axios";
 
 const useCustomDataHook = (endpoint) => {
