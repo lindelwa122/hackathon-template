@@ -19,5 +19,12 @@ exports.getWork = asyncHandler(async (req, res, next) => {
 });
 
 exports.getFrequentedPlace = asyncHandler(async (req, res, next) => {
-    const places = await Place.find({ user_id: req.user._id });
+    const place = await Place.find({ user_id: req.user._id })
+        .sort({ timesVisited: 'desc' })
+        .exec()[0];
+
+    const serializedData = new PlaceSerializer(place);
+    return res.status(200).json({
+        data: serializedData.getJSON()
+    });
 });
