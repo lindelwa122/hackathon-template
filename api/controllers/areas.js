@@ -1,4 +1,4 @@
-const Place = require('./models/place');
+const Place = require('..s/models/place');
 const PlaceSerializer = require('../serializers/PlaceSerializer');
 const asyncHandler = require('express-async-handler');
 
