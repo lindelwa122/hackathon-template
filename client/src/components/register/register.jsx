@@ -24,7 +24,7 @@ const Register = () => {
         password,
       });
 
-      // Optionally save token or user data
+      //Save token or user data... We all agreed to use local
       localStorage.setItem('token', response.data.token);
 
       // Redirect to dashboard or login
@@ -50,7 +50,7 @@ const Register = () => {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="John Doe"
+            placeholder="Lloyd Zwenyere"
           />
         </div>
 
@@ -61,7 +61,7 @@ const Register = () => {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="lloyd@zwenyere.com"
           />
         </div>
 

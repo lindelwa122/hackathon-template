@@ -1,5 +1,5 @@
 import React from 'react';
-import './Alerts.css'; // Optional: Use if you're not using Tailwind or styled-components
+import './Alerts.css'; 
 
 const alerts = [
   {
