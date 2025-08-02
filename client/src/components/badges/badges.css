@@ -1,0 +1,41 @@
+.badges-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.badge-card {
+  flex: 1 1 200px;
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.badge-icon {
+  font-size: 2rem;
+  margin-right: 0.75rem;
+}
+
+.badge-content h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.badge-content p {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+.badge-content .badge-date {
+  font-size: 0.85rem;
+  color: #888;
+}
