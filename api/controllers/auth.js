@@ -1,13 +1,17 @@
 const User = require('../models/users');
 const passport = require('passport');
 const asyncHandler = require('express-async-handler');
-const momentumDataPoint = require('../utils/ai_database');
+const momentumDataPoint = require('../utils/momentumDataPoint');
+const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const { redirect } = require('react-router-dom');
+const { password } = require('pg/lib/defaults');
 
 exports.login = asyncHandler(async (req, res, next) => {
     passport.authenticate('local', (err, user, info, status)=> {
+        console.log(err);        console.log(user);        console.log(info);
+
         if(err) {return next(err)}
         if(!user) {
             return res.status(404).json({
@@ -32,14 +36,24 @@ exports.logout = asyncHandler(async(req, res, next)=>{
 
 exports.register = asyncHandler(async(req, res, next)=>{
     const userId = req.body.userId;
-    const existingUser = awaits = User.findOne({firstName,lastName});
+    const existingUser = await User.findOne({ id: userId });
     if (existingUser) {
         return res.status(409).json({message: 'user already exists'});
     }
+    
+    console.log('i get here')
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(hashPassword)
+    
+    const userData = await momentumDataPoint(userId);
 
-    const hashPassword = await bcrypt.hash(Password, 10);
-    const userData = momentumDataPoint(userId);
-    User.create(Object.assign({}, userData, { password: hashPassword }));
+    console.log(userData)
 
-    return redirect('/auth/login');
+    try {
+        await User.create(Object.assign({}, userData, { password: hashPassword, id: userId }));
+    } catch (err) {
+        console.log(err)
+    }
+
+    return res.status(200).json({message: 'registered'});
 });

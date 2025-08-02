@@ -10,6 +10,7 @@ const session = require('express-session');
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/users');
+const bcrypt = require('bcrypt');
 
 mongoose.set('strictQuery', false);
 const mongoDB = process.env.mongoDB;
@@ -33,8 +34,10 @@ passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
             const user = await User.findOne({ username });
+
+            const isMatch = await bcrypt.compare(password, user.password)
             
-            if (user == null || user.password != password) {
+            if (user == null || !isMatch) {
                 return done(null, false, "Incorrect username/password");
             }
 

@@ -47,12 +47,7 @@ function parseSouthAfricanID(idNumber) {
 
 // Generate user data for testing or seeding
 async function generateUserSchemaCompatible(idNumber) {
-  const { dob, gender } = parseSouthAfricanID(idNumber);
-  if (!dob) return { error: 'Invalid ID number format.' };
-
-  const fullName = gender === 'Male'
-    ? faker.person.fullName({ sex: 'male' })
-    : faker.person.fullName({ sex: 'female' });
+  const fullName = faker.person.fullName({ sex: 'male' });
 
   const [firstName, lastName] = fullName.split(' ');
   const username = faker.internet.userName({ firstName, lastName }).toLowerCase();
@@ -66,7 +61,7 @@ async function generateUserSchemaCompatible(idNumber) {
   ];
 
   const numberPlate = `ND ${faker.number.int({ min: 100, max: 999 })} ${faker.number.int({ min: 100, max: 999 })} GP`;
-  const releaseYear = faker.date.between('2015-01-01', '2023-12-31');
+  const releaseYear = '2015-01-01';
 
   return {
     firstName,
@@ -74,20 +69,16 @@ async function generateUserSchemaCompatible(idNumber) {
     username,
     email,
     password,
-    id: idNumber,
-    dob: dob.toISOString().split('T')[0],
-    gender,
+    id: "0123456789123",
     car: {
       model: faker.helpers.arrayElement(carModels),
       numberPlate,
-      releaseDate: releaseYear.toISOString(),
+      releaseDate: releaseYear,
     }
   };
 }
 
-module.exports = {
-  generateUserSchemaCompatible
-};
+module.exports = generateUserSchemaCompatible;
 
 
 
