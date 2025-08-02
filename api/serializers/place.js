@@ -1,11 +1,13 @@
-class AlertsSerializer {
-  constructor(Alerts) {
+class PlaceSerializer {
+  constructor(Place) {
     this.returnValue = {
-      id: Alerts._id,
-      timestamp: Alerts.timestamp,
-      title: Alerts.title,
-      status: Alerts.status,
-      user_id: Alerts.user_id,
+      id: Place._id,
+      name: Place.name,
+      location: Place.location,
+      arrival: Place.arrival,
+      departure: Place.departure,
+      created_at: Place.created_at,
+      updated_at: Place.updated_at,
     };
   }
 
@@ -30,4 +32,4 @@ class AlertsSerializer {
   }
 }
 
-module.exports = AlertsSerializer;
+module.exports = PlaceSerializer;

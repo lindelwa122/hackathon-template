@@ -1,4 +1,4 @@
-const User = require = ('./models/user');
+const User = require('../models/users');
 const passport = require('passport');
 const asyncHandler = require('express-async-handler');
 const momentumDataPoint = require('../utils/ai_database');
@@ -6,17 +6,20 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const { redirect } = require('react-router-dom');
 
-exports.login = passport.authenticate('local', (err, user, info, status)=> {
-    if(err) {return next(err)}
-    if(!user) {
-        return res.status(404).json({
-            message: 'user or password incorrect'
+exports.login = asyncHandler(async (req, res, next) => {
+    passport.authenticate('local', (err, user, info, status)=> {
+        if(err) {return next(err)}
+        if(!user) {
+            return res.status(404).json({
+                message: 'user or password incorrect'
+            });
+        }
+        return res.status(200).json({
+            message: 'logged in successfully'
         });
-    }
-    return res.status(200).json({
-        message: 'logged in successfully'
-    });
-})(req, res, next);
+    })(req, res, next);
+});
+
 
 exports.logout = asyncHandler(async(req, res, next)=>{
     req.logout(err=>{

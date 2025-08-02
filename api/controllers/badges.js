@@ -1,6 +1,6 @@
-const Badges = require('./models/badges');
-const BadgesSerializer = require('../serializers/badgesSerializer');
-const profileSerializer = require('../serializers/profileSerializer');
+const Badges = require('../models/badge');
+const BadgesSerializer = require('../serializers/badge');
+const profileSerializer = require('../serializers/profile');
 const asyncHandler = require('express-async-handler');
 const Profile = require('../models/profile');
 

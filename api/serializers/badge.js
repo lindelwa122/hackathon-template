@@ -1,11 +1,10 @@
-class AlertsSerializer {
-  constructor(Alerts) {
+class BadgeSerializer {
+  constructor(Badge) {
     this.returnValue = {
-      id: Alerts._id,
-      timestamp: Alerts.timestamp,
-      title: Alerts.title,
-      status: Alerts.status,
-      user_id: Alerts.user_id,
+      id: Badge._id,
+      type: Badge.type,
+      description: Badge.description,
+      image: Badge.image,
     };
   }
 
@@ -30,4 +29,4 @@ class AlertsSerializer {
   }
 }
 
-module.exports = AlertsSerializer;
+module.exports = BadgeSerializer;

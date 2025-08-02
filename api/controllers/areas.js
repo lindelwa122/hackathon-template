@@ -1,5 +1,5 @@
-const Place = require('..s/models/place');
-const PlaceSerializer = require('../serializers/PlaceSerializer');
+const Place = require('../models/place');
+const PlaceSerializer = require('../serializers/place');
 const asyncHandler = require('express-async-handler');
 
 exports.getHome = asyncHandler(async (req, res, next) => {
